@@ -94,7 +94,7 @@ view model =
 getRandomJokes : Cmd Msg
 getRandomJokes =
   Http.get
-    { url = "http://api.icndb.com/jokes/random"
+    { url = "https://api.icndb.com/jokes/random"
     , expect = Http.expectJson GotJson jokeDecoder
     }
 

@@ -6133,7 +6133,7 @@ var $author$project$Main$jokeDecoder = A2(
 var $author$project$Main$getRandomJokes = $elm$http$Http$get(
 	{
 		expect: A2($elm$http$Http$expectJson, $author$project$Main$GotJson, $author$project$Main$jokeDecoder),
-		url: 'http://api.icndb.com/jokes/random'
+		url: 'https://api.icndb.com/jokes/random'
 	});
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2($author$project$Main$Loading, $author$project$Main$getRandomJokes);
