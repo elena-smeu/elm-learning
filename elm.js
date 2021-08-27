@@ -5313,8 +5313,11 @@ var $elm$core$Task$perform = F2(
 			A2($elm$core$Task$map, toMessage, task));
 	});
 var $elm$browser$Browser$element = _Browser_element;
-var $author$project$Main$GotText = $elm$core$Basics$identity;
 var $author$project$Main$Loading = {$: 1};
+var $author$project$Main$GotJson = function (a) {
+	return {$: 1, a: a};
+};
+var $elm$json$Json$Decode$decodeString = _Json_runOnString;
 var $elm$http$Http$BadStatus_ = F2(
 	function (a, b) {
 		return {$: 3, a: a, b: b};
@@ -5870,17 +5873,6 @@ var $elm$http$Http$expectStringResponse = F2(
 			$elm$core$Basics$identity,
 			A2($elm$core$Basics$composeR, toResult, toMsg));
 	});
-var $elm$http$Http$BadBody = function (a) {
-	return {$: 4, a: a};
-};
-var $elm$http$Http$BadStatus = function (a) {
-	return {$: 3, a: a};
-};
-var $elm$http$Http$BadUrl = function (a) {
-	return {$: 0, a: a};
-};
-var $elm$http$Http$NetworkError = {$: 2};
-var $elm$http$Http$Timeout = {$: 1};
 var $elm$core$Result$mapError = F2(
 	function (f, result) {
 		if (!result.$) {
@@ -5892,6 +5884,17 @@ var $elm$core$Result$mapError = F2(
 				f(e));
 		}
 	});
+var $elm$http$Http$BadBody = function (a) {
+	return {$: 4, a: a};
+};
+var $elm$http$Http$BadStatus = function (a) {
+	return {$: 3, a: a};
+};
+var $elm$http$Http$BadUrl = function (a) {
+	return {$: 0, a: a};
+};
+var $elm$http$Http$NetworkError = {$: 2};
+var $elm$http$Http$Timeout = {$: 1};
 var $elm$http$Http$resolve = F2(
 	function (toResult, response) {
 		switch (response.$) {
@@ -5915,12 +5918,19 @@ var $elm$http$Http$resolve = F2(
 					toResult(body));
 		}
 	});
-var $elm$http$Http$expectString = function (toMsg) {
-	return A2(
-		$elm$http$Http$expectStringResponse,
-		toMsg,
-		$elm$http$Http$resolve($elm$core$Result$Ok));
-};
+var $elm$http$Http$expectJson = F2(
+	function (toMsg, decoder) {
+		return A2(
+			$elm$http$Http$expectStringResponse,
+			toMsg,
+			$elm$http$Http$resolve(
+				function (string) {
+					return A2(
+						$elm$core$Result$mapError,
+						$elm$json$Json$Decode$errorToString,
+						A2($elm$json$Json$Decode$decodeString, decoder, string));
+				}));
+	});
 var $elm$http$Http$emptyBody = _Http_emptyBody;
 var $elm$http$Http$Request = function (a) {
 	return {$: 1, a: a};
@@ -6094,14 +6104,19 @@ var $elm$http$Http$get = function (r) {
 	return $elm$http$Http$request(
 		{as: $elm$http$Http$emptyBody, aw: r.aw, Q: _List_Nil, aB: 'GET', aM: $elm$core$Maybe$Nothing, ak: $elm$core$Maybe$Nothing, aP: r.aP});
 };
+var $elm$json$Json$Decode$field = _Json_decodeField;
+var $elm$json$Json$Decode$string = _Json_decodeString;
+var $author$project$Main$jokeDecoder = A2(
+	$elm$json$Json$Decode$field,
+	'value',
+	A2($elm$json$Json$Decode$field, 'joke', $elm$json$Json$Decode$string));
+var $author$project$Main$getRandomJokes = $elm$http$Http$get(
+	{
+		aw: A2($elm$http$Http$expectJson, $author$project$Main$GotJson, $author$project$Main$jokeDecoder),
+		aP: 'https://api.icndb.com/jokes/random'
+	});
 var $author$project$Main$init = function (_v0) {
-	return _Utils_Tuple2(
-		$author$project$Main$Loading,
-		$elm$http$Http$get(
-			{
-				aw: $elm$http$Http$expectString($elm$core$Basics$identity),
-				aP: 'https://api.icndb.com'
-			}));
+	return _Utils_Tuple2($author$project$Main$Loading, $author$project$Main$getRandomJokes);
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
@@ -6116,33 +6131,97 @@ var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		var result = msg;
-		if (!result.$) {
-			var fullText = result.a;
-			return _Utils_Tuple2(
-				$author$project$Main$Success(fullText),
-				$elm$core$Platform$Cmd$none);
+		if (!msg.$) {
+			return _Utils_Tuple2($author$project$Main$Loading, $author$project$Main$getRandomJokes);
 		} else {
-			return _Utils_Tuple2($author$project$Main$Failure, $elm$core$Platform$Cmd$none);
+			var result = msg.a;
+			if (!result.$) {
+				var fullText = result.a;
+				return _Utils_Tuple2(
+					$author$project$Main$Success(fullText),
+					$elm$core$Platform$Cmd$none);
+			} else {
+				return _Utils_Tuple2($author$project$Main$Failure, $elm$core$Platform$Cmd$none);
+			}
 		}
 	});
-var $elm$html$Html$pre = _VirtualDom_node('pre');
+var $author$project$Main$MorePlease = {$: 0};
+var $elm$html$Html$button = _VirtualDom_node('button');
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$string(string));
+	});
+var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
+var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 0, a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
+var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$Main$view = function (model) {
 	switch (model.$) {
 		case 0:
-			return $elm$html$Html$text('I was unable to load your Chuck Norris Joke.');
+			return A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('container')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('I was unable to load your Chuck Norris Joke.'),
+						A2(
+						$elm$html$Html$button,
+						_List_fromArray(
+							[
+								$elm$html$Html$Events$onClick($author$project$Main$MorePlease)
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Try Again!')
+							]))
+					]));
 		case 1:
 			return $elm$html$Html$text('Loading...');
 		default:
-			var fullText = model.a;
+			var joke = model.a;
 			return A2(
-				$elm$html$Html$pre,
+				$elm$html$Html$div,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text(fullText)
+						A2(
+						$elm$html$Html$button,
+						_List_fromArray(
+							[
+								$elm$html$Html$Events$onClick($author$project$Main$MorePlease),
+								A2($elm$html$Html$Attributes$style, 'display', 'block')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Hahaha, Give me another one!')
+							])),
+						$elm$html$Html$text(joke)
 					]));
 	}
 };
