@@ -2,14 +2,13 @@ module Main exposing (..)
 
 import Browser
 import Html exposing (..)
-import Html.Attributes exposing (style)
+import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import Http
 import Json.Decode exposing (Decoder, field, string)
 
 
 -- MAIN
-
 
 main =
   Browser.element
@@ -77,19 +76,55 @@ view : Model -> Html Msg
 view model =
   case model of
     Failure ->
-        div []
+        div [ style "background-color" "red"
+        , style "top" "40%"
+        , style "right" "30%"]
         [ text "I was unable to load your Chuck Norris Joke."
         , button [ onClick MorePlease ] [ text "Try Again!"]
         ]
 
 
     Loading ->
-      text "Loading..."
+        div [
+        style "background-color" "#2a9d8f", style "width" "100vw", style "height" "100vh"]
+         [
+          div[ style "position" "absolute", style "top" "30%", style "left" "5%"]
+                 [button [ onClick MorePlease,
+                  style "display" "block",
+                   style "width" "600px",
+                   style "height" "200px",
+                    style "background-color" "#e9c46a"
+                    , style "border" "none",
+                    style "cursor" "pointer",
+                     style "color" "#264653",
+                      style "text-alight" "center",
+                      style "border-radius" "12px",
+                       style "font-size" "3rem" ] [text "Hahaha, Give me another one!"]
+                 ],
+         div [ style "position" "absolute", style "top" "30%", style "left" "40%", style "font-size" "5rem"]
+                [ text "Loading..."]
+                ]
 
     Success joke ->
-        div []
-        [ button [ onClick MorePlease, style "display" "block"] [text "Hahaha, Give me another one!"]
-        ,text joke ]
+        div [
+        style "background-color" "#2a9d8f", style "width" "100vw", style "height" "100vh" ]
+        [
+        div[ style "position" "absolute", style "top" "30%", style "left" "5%"]
+        [button [ onClick MorePlease,
+         style "display" "block",
+          style "width" "600px",
+          style "height" "200px",
+           style "background-color" "#e9c46a"
+           , style "border" "none",
+           style "cursor" "pointer",
+            style "color" "#264653",
+             style "text-alight" "center",
+             style "border-radius" "12px",
+              style "font-size" "3rem" ] [text "Hahaha, Give me another one!"]
+        ],
+        div [ style "position" "absolute", style "top" "30%", style "left" "40%", style "font-size" "5rem"]
+        [ text joke]
+        ]
 
 getRandomJokes : Cmd Msg
 getRandomJokes =

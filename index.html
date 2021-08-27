@@ -6194,7 +6194,12 @@ var $author$project$Main$view = function (model) {
 		case 'Failure':
 			return A2(
 				$elm$html$Html$div,
-				_List_Nil,
+				_List_fromArray(
+					[
+						A2($elm$html$Html$Attributes$style, 'background-color', 'red'),
+						A2($elm$html$Html$Attributes$style, 'top', '40%'),
+						A2($elm$html$Html$Attributes$style, 'right', '30%')
+					]),
 				_List_fromArray(
 					[
 						$elm$html$Html$text('I was unable to load your Chuck Norris Joke.'),
@@ -6210,26 +6215,117 @@ var $author$project$Main$view = function (model) {
 							]))
 					]));
 		case 'Loading':
-			return $elm$html$Html$text('Loading...');
+			return A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						A2($elm$html$Html$Attributes$style, 'background-color', '#2a9d8f'),
+						A2($elm$html$Html$Attributes$style, 'width', '100vw'),
+						A2($elm$html$Html$Attributes$style, 'height', '100vh')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								A2($elm$html$Html$Attributes$style, 'position', 'absolute'),
+								A2($elm$html$Html$Attributes$style, 'top', '30%'),
+								A2($elm$html$Html$Attributes$style, 'left', '5%')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Events$onClick($author$project$Main$MorePlease),
+										A2($elm$html$Html$Attributes$style, 'display', 'block'),
+										A2($elm$html$Html$Attributes$style, 'width', '600px'),
+										A2($elm$html$Html$Attributes$style, 'height', '200px'),
+										A2($elm$html$Html$Attributes$style, 'background-color', '#e9c46a'),
+										A2($elm$html$Html$Attributes$style, 'border', 'none'),
+										A2($elm$html$Html$Attributes$style, 'cursor', 'pointer'),
+										A2($elm$html$Html$Attributes$style, 'color', '#264653'),
+										A2($elm$html$Html$Attributes$style, 'text-alight', 'center'),
+										A2($elm$html$Html$Attributes$style, 'border-radius', '12px'),
+										A2($elm$html$Html$Attributes$style, 'font-size', '3rem')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Hahaha, Give me another one!')
+									]))
+							])),
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								A2($elm$html$Html$Attributes$style, 'position', 'absolute'),
+								A2($elm$html$Html$Attributes$style, 'top', '30%'),
+								A2($elm$html$Html$Attributes$style, 'left', '40%'),
+								A2($elm$html$Html$Attributes$style, 'font-size', '5rem')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Loading...')
+							]))
+					]));
 		default:
 			var joke = model.a;
 			return A2(
 				$elm$html$Html$div,
-				_List_Nil,
+				_List_fromArray(
+					[
+						A2($elm$html$Html$Attributes$style, 'background-color', '#2a9d8f'),
+						A2($elm$html$Html$Attributes$style, 'width', '100vw'),
+						A2($elm$html$Html$Attributes$style, 'height', '100vh')
+					]),
 				_List_fromArray(
 					[
 						A2(
-						$elm$html$Html$button,
+						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Events$onClick($author$project$Main$MorePlease),
-								A2($elm$html$Html$Attributes$style, 'display', 'block')
+								A2($elm$html$Html$Attributes$style, 'position', 'absolute'),
+								A2($elm$html$Html$Attributes$style, 'top', '30%'),
+								A2($elm$html$Html$Attributes$style, 'left', '5%')
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text('Hahaha, Give me another one!')
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Events$onClick($author$project$Main$MorePlease),
+										A2($elm$html$Html$Attributes$style, 'display', 'block'),
+										A2($elm$html$Html$Attributes$style, 'width', '600px'),
+										A2($elm$html$Html$Attributes$style, 'height', '200px'),
+										A2($elm$html$Html$Attributes$style, 'background-color', '#e9c46a'),
+										A2($elm$html$Html$Attributes$style, 'border', 'none'),
+										A2($elm$html$Html$Attributes$style, 'cursor', 'pointer'),
+										A2($elm$html$Html$Attributes$style, 'color', '#264653'),
+										A2($elm$html$Html$Attributes$style, 'text-alight', 'center'),
+										A2($elm$html$Html$Attributes$style, 'border-radius', '12px'),
+										A2($elm$html$Html$Attributes$style, 'font-size', '3rem')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Hahaha, Give me another one!')
+									]))
 							])),
-						$elm$html$Html$text(joke)
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								A2($elm$html$Html$Attributes$style, 'position', 'absolute'),
+								A2($elm$html$Html$Attributes$style, 'top', '30%'),
+								A2($elm$html$Html$Attributes$style, 'left', '40%'),
+								A2($elm$html$Html$Attributes$style, 'font-size', '5rem')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(joke)
+							]))
 					]));
 	}
 };
